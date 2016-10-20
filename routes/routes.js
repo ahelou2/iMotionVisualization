@@ -30,8 +30,9 @@ var appRouter = function(app) {
 	app.get("/getMotionData", function(req, res) {
 		let readIdx = app.motionData.readIdx;
 		let bufferLength = app.motionData.buffer.length;
-		res.send(app.motionData.buffer[readIdx]);
+		res.send(JSON.stringify(app.motionData.buffer[readIdx]));
 		// res.send("test");
+		app.motionData.buffer[readIdx] = "NO DATA";
 		app.motionData.readIdx = (readIdx + 1) % bufferLength;
 	});
 	
