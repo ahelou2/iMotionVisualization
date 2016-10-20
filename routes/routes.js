@@ -27,10 +27,22 @@ var appRouter = function(app) {
 		}
 	});
 
+	app.get("/getMotionData", function(req, res) {
+		let readIdx = app.motionData.readIdx;
+		let bufferLength = app.motionData.buffer.length;
+		res.send(app.motionData.buffer[readIdx]);
+		// res.send("test");
+		app.motionData.readIdx = (readIdx + 1) % bufferLength;
+	});
+	
 	app.post("/publishMotionData", function(req, res) {
 		if(!req.body.motionData) {
 			return res.send({"status": "error", "message": "missing a parameter"});
 		} else {
+			let writeIdx = app.motionData.writeIdx;
+			let bufferLength = app.motionData.buffer.length;
+			app.motionData.buffer[writeIdx] = req.body.motionData;
+			app.motionData.writeIdx = (writeIdx + 1) % bufferLength;
 			return res.send(req.body);
 		}
 	});

@@ -9,6 +9,12 @@ app.use(bodyParser.urlencoded({ extended: true }));
 //   port: 3000,
 //   trustProxy: true,
 // }));
+
+app.motionData = {
+	buffer: Array(100).fill('NO DATA'),
+	writeIdx: 0,
+	readIdx: 0,
+};
  
 var routes = require("./routes/routes.js")(app);
  
