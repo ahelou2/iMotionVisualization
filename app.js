@@ -9,14 +9,8 @@ app.use(express.static('node_modules/three/examples/js/libs'));
 app.use(express.static('node_modules/three/examples/js'));
 app.use(express.static('node_modules/three/build'));
 
-// app.use('/', require('redirect-https')({
-//   body: '<!-- Hello Mr Developer! Please use HTTPS instead -->',
-//   port: 3000,
-//   trustProxy: true,
-// }));
-
 app.motionData = {
-	buffer: Array(1000).fill("NO DATA"),
+	buffer: new Array(100),
 	writeIdx: 0,
 	readIdx: 0,
 };

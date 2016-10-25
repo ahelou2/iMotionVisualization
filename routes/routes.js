@@ -30,16 +30,24 @@ var appRouter = function(app) {
 	app.get("/getMotionData", function(req, res) {
 		let readIdx = app.motionData.readIdx;
 		let bufferLength = app.motionData.buffer.length;
-		res.send(JSON.stringify(app.motionData.buffer[readIdx]));
-		// res.send("test");
-		app.motionData.buffer[readIdx] = "NO DATA";
-		app.motionData.readIdx = (readIdx + 1) % bufferLength;
+		if (app.motionData.buffer[readIdx] != null) {
+			res.setHeader('Content-Type', 'application/json');
+			res.send(JSON.stringify(app.motionData.buffer[readIdx]));
+			// res.send(app.motionData.buffer[readIdx]);
+			app.motionData.buffer[readIdx] = null;
+			app.motionData.readIdx = (readIdx + 1) % bufferLength;
+			return ;
+		} else {
+			return res.send({});
+		}
 	});
 	
 	app.post("/publishMotionData", function(req, res) {
+
 		if(!req.body.motionData) {
 			return res.send({"status": "error", "message": "missing a parameter"});
 		} else {
+			console.log("MOTION DATA RECEIVED");
 			let writeIdx = app.motionData.writeIdx;
 			let bufferLength = app.motionData.buffer.length;
 			app.motionData.buffer[writeIdx] = req.body.motionData;
