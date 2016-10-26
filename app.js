@@ -5,12 +5,13 @@ var app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static('visualize'));
+app.use(express.static('helpers'));
 app.use(express.static('node_modules/three/examples/js/libs'));
 app.use(express.static('node_modules/three/examples/js'));
 app.use(express.static('node_modules/three/build'));
 
 app.motionData = {
-	buffer: new Array(100),
+	buffer: new Array(1),
 	writeIdx: 0,
 	readIdx: 0,
 };
