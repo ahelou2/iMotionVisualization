@@ -8,7 +8,7 @@ if ( ! Detector.webgl ) Detector.addGetWebGLMessage();
 
 var container, stats;
 
-var camera, scene, light, renderer;
+var camera, scene, renderer;
 
 var box, coordAxis;
 
@@ -19,7 +19,8 @@ animate();
 
 function init() {
 
-  fetchData();
+  // fetchData();
+  setInterval(fetchData, 500);
 
   container = document.createElement( 'div' );
   document.body.appendChild( container );
@@ -32,11 +33,6 @@ function init() {
   scene.autoUpdate = false;
 
   scene.add( new THREE.AmbientLight( 0x404040 ) );
-  //
-  light = new THREE.DirectionalLight( 0xffffff );
-  light.position.set( -50, 1, 50 );
-  light.matrixAutoUpdate = false;
-  scene.add( light );
 
   var map = new THREE.TextureLoader().load( './textures/UV_Grid_Sm.jpg' );
   map.wrapS = map.wrapT = THREE.RepeatWrapping;
@@ -44,7 +40,7 @@ function init() {
 
   var material = new THREE.MeshLambertMaterial( { map: map, side: THREE.DoubleSide } );
 
-  box = new THREE.Mesh( new THREE.BoxGeometry( 40, 10, 100), material );
+  box = new THREE.Mesh( new THREE.BoxGeometry( 40, 100, 10), material );
   box.position.set( 0, 0, 0 );
   box.matrixAutoUpdate = false;
   scene.add( box );
@@ -91,11 +87,10 @@ function animate() {
 
 function render() {
 
-
   let transformMat = interpretData(buffer.read());
   
   if (transformMat == null) {
-    fetchData();
+    // fetchData();
     transformMat = box.matrixWorld;
   } else {
     transformMat = transformMat.clone();
@@ -103,13 +98,12 @@ function render() {
 
   box.matrixWorld = transformMat;
 
-  light.matrixWorld = transformMat;
-
   coordAxis.matrixWorld = transformMat;
 
  // camera.position.set(0, 0, box.position.z + 400);
 
-  camera.lookAt( box.position );
+  // camera.lookAt( box.position );
+  camera.lookAt(scene);
 
   renderer.render( scene, camera );
 }
