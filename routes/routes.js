@@ -36,6 +36,7 @@ var appRouter = function(app) {
 			// res.send(app.motionData.buffer[readIdx]);
 			app.motionData.buffer[readIdx] = null;
 			app.motionData.readIdx = (readIdx + 1) % bufferLength;
+			console.log("MOTION DATA SENT");
 			return ;
 		} else {
 			return res.send({});

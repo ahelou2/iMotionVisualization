@@ -6,30 +6,38 @@ setInterval(fetchData, 500);
 
 function fetchData() {
 
-fetch('http://localhost:3000/getMotionData', {
-     method: 'GET',
-     headers: {
-           'Accept': 'application/json',
-           'Content-Type': 'application/json',
-         },
-   }).then((response) => {
-    if (!response.ok) {
-      throw Error(response.statusText);
-    }
-    return response.json();
-  }).then((responseJson) => {
-    
-    if (responseJson == null || JSON.stringify(responseJson) == JSON.stringify({})) {
-      throw Error("NO DATA");
-    }
-    // console.log(responseJson);
+  var xhr = new XMLHttpRequest();
+  xhr.onreadystatechange = function() {
+    try {
+        if (xhr.readyState == XMLHttpRequest.DONE) {
+           if (xhr.status == 200) {
 
-    dataArr = JSON.parse(responseJson);
-    buffer.write(dataArr);
-  }).catch((error) => {
-   console.error(error);
-  });
+            if (xhr.responseType == "json") {
 
+              let responseJson = xhr.response;
+              if (responseJson == null || JSON.stringify(responseJson) == JSON.stringify({})) {
+                throw Error("NO DATA");
+              }
+
+              dataArr = JSON.parse(responseJson);
+              buffer.write(dataArr);
+
+            } else {
+              throw Error("Expected response type to always be JSON");
+            }
+            
+          } else {
+            throw Error(xhr.statusText);
+          }
+        }
+      } catch (error) {
+        console.error(error);
+      }
+  }
+  xhr.open('GET', 'http://192.168.1.11:3000/getMotionData', true);
+  xhr.setRequestHeader("Content-Type", "application/json");
+  xhr.responseType = "json";
+  xhr.send(null);
 }
 
 function interpretData(data) {
