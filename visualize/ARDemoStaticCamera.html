@@ -41,14 +41,9 @@
 
 		<script src="dat.gui.min.js"></script>
 
-		<script src="buffer.js"></script>
-
 		<script src="fetchMotionData.js"></script>
 
 		<script>
-
-			const three = THREE;
-
 			var SCREEN_WIDTH = window.innerWidth;
 			var SCREEN_HEIGHT = window.innerHeight;
 			var FLOOR = -250;
@@ -70,16 +65,7 @@
 				container = document.getElementById( 'container' );
 				camera = new THREE.PerspectiveCamera( 30, SCREEN_WIDTH / SCREEN_HEIGHT, 1, 10000 );
 				camera.position.z = 2200;
-				// camera.matrixAutoUpdate = false;
 				scene = new THREE.Scene();
-				// WARNING: IM NOT SURE WHY THIS IS NEEDED. IM JUST COPYING FROM  interpretMotionDataMobile.js
-				// scene.autoUpdate = false;
-
-				box = new THREE.Mesh( new THREE.BoxGeometry( 40, 100, 10), material );
-  box.position.set( 0, 0, 0 );
-  box.matrixAutoUpdate = false;
-  scene.add( box );
-
 				scene.fog = new THREE.Fog( 0xffffff, 2000, 10000 );
 				scene.add( camera );
 				// GROUND (WARNING: I'VE REMOVED GROUND SO THAT DEMO LOOKS BETTER)
@@ -208,23 +194,14 @@
 				
 			}
 			function render() {
-
-				let motionParameters = interpretData(buffer.read());
-
-				if (motionParameters != null) {
-
-					camera.quaternion.copy(motionParameters.quaternion);
-				}
-  
-
 				var delta = 0.75 * clock.getDelta();
-				
-
+				camera.position.x += ( mouseX - camera.position.x ) * .05;
+				camera.position.y = THREE.Math.clamp( camera.position.y + ( - mouseY - camera.position.y ) * .05, 0, 1000 );
+				camera.lookAt( scene.position );
 				if( mixer ) {
 					mixer.update( delta );
 					helper.update();
 				}
-
 				renderer.render( scene, camera );
 			}
 		</script>

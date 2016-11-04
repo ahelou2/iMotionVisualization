@@ -1,3 +1,9 @@
+
+
+var buffer = new BufferLvl2(2);
+
+setInterval(fetchData, 500);
+
 function fetchData() {
 
 fetch('http://localhost:3000/getMotionData', {
@@ -53,7 +59,7 @@ function interpretData(data) {
       transform4DArr[i] = rotMatArr[idx];
       idx++;
     } else if (((i + 1) % 4) === 0 && i < 12){
-      // transform4DArr[i] = positionArr[idx2];
+      transform4DArr[i] = positionArr[idx2];
       idx2++;
     } else if (i === 15) {
       transform4DArr[i] = 1;
@@ -61,8 +67,14 @@ function interpretData(data) {
   }
   let transform4DMat = new three.Matrix4();
   transform4DMat.fromArray(transform4DArr);
-  // transform4DMat.setPosition(positionVec);
+  transform4DMat.setPosition(positionVec);
 
+  let translation = new THREE.Vector3();
+  let quaternion = new THREE.Quaternion();
+  let scale = new THREE.Vector3();
 
-  return transform4DMat;
+  transform4DMat.decompose(translation, quaternion, scale);
+
+  // return transform4DMat;
+  return {translation: translation, quaternion: quaternion, scale: scale, transformMatrix: transform4DMat};
 }
