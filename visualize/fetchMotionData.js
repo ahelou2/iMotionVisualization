@@ -1,6 +1,6 @@
 
 
-var buffer = new BufferLvl2(2);
+var buffer = new BufferLvl2(1);
 
 setInterval(fetchData, 500);
 
@@ -59,6 +59,7 @@ function interpretData(data) {
   });
   positionVec.fromArray(positionArr);
 
+  var rearrangeRowsOrder = [2, 1, 0];
   var transform4DArr = Array(16).fill(0);
   var idx = 0;
   var idx2 = 0;
@@ -67,14 +68,16 @@ function interpretData(data) {
       transform4DArr[i] = rotMatArr[idx];
       idx++;
     } else if (((i + 1) % 4) === 0 && i < 12){
-      transform4DArr[i] = positionArr[idx2];
+      // transform4DArr[i] = positionArr[idx2];
       idx2++;
     } else if (i === 15) {
       transform4DArr[i] = 1;
     }
   }
   let transform4DMat = new three.Matrix4();
-  transform4DMat.fromArray(transform4DArr);
+  // transform4DMat.fromArray(transform4DArr);
+  // transform4DArr = reorderMatRotArrOrder(transform4DArr, [2, 1, 0], 4, 4);
+  transform4DMat.set(...transform4DArr)
   transform4DMat.setPosition(positionVec);
 
   let translation = new THREE.Vector3();
@@ -85,4 +88,20 @@ function interpretData(data) {
 
   // return transform4DMat;
   return {translation: translation, quaternion: quaternion, scale: scale, transformMatrix: transform4DMat};
+}
+
+function reorderMatRotArrOrder(rotMatArr, newRotOrder, numRows, numCols) {
+
+  let newRotMatArr = new Array(numCols * numRows);
+  let idx = 0;
+    for (let i = 1; i++; i <= numRows - 1) {
+      if (i % numCols != 0) {
+        for (let j = 0; j++; j < numCols - 1) {
+          newRotMatArr[idx] = rotMatArr[newRotOrder[i]][j] ;
+          idx++;
+        }
+      }
+  }
+
+  return newRotMatArr;
 }

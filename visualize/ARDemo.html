@@ -45,6 +45,8 @@
 
 		<script src="fetchMotionData.js"></script>
 
+		<script src="DeviceOrientationControls.js"></script>
+
 		<script>
 
 			const three = THREE;
@@ -53,7 +55,7 @@
 			var SCREEN_HEIGHT = window.innerHeight;
 			var FLOOR = -250;
 			var container;
-			var camera, scene;
+			var camera, scene, controls;
 			var renderer;
 			var mesh, mesh2, helper;
 			var mixer, facesClip, bonesClip;
@@ -68,20 +70,24 @@
 			animate();
 			function init() {
 				container = document.getElementById( 'container' );
-				camera = new THREE.PerspectiveCamera( 30, SCREEN_WIDTH / SCREEN_HEIGHT, 1, 10000 );
-				camera.position.z = 2200;
+				camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 1, 10000 );
+				camera.up = new THREE.Vector3(0,1,0);
+				camera.position.y= -200;
+				camera.position.z = 2000;
+				controls = new THREE.DeviceOrientationControls( camera );
 				// camera.matrixAutoUpdate = false;
 				scene = new THREE.Scene();
 				// WARNING: IM NOT SURE WHY THIS IS NEEDED. IM JUST COPYING FROM  interpretMotionDataMobile.js
 				// scene.autoUpdate = false;
 
 				box = new THREE.Mesh( new THREE.BoxGeometry( 40, 100, 10), material );
-  box.position.set( 0, 0, 0 );
-  box.matrixAutoUpdate = false;
-  scene.add( box );
+			  box.position.set( 0, 0, 0 );
+			  // box.matrixAutoUpdate = false;
+			  scene.add( box );
 
 				scene.fog = new THREE.Fog( 0xffffff, 2000, 10000 );
 				scene.add( camera );
+				// camera.lookAt( scene.position );
 				// GROUND (WARNING: I'VE REMOVED GROUND SO THAT DEMO LOOKS BETTER)
 				var geometry = new THREE.PlaneBufferGeometry( 16000, 16000 );
 				var material = new THREE.MeshPhongMaterial( { emissive: 0x888888 } );
@@ -108,12 +114,16 @@
 				renderer = new THREE.WebGLRenderer( { antialias: true, alpha: true } );
 				// renderer.setClearColor( scene.fog.color );
 				renderer.setPixelRatio( window.devicePixelRatio );
-				renderer.setSize( SCREEN_WIDTH, SCREEN_HEIGHT );
+				// renderer.setSize( SCREEN_WIDTH, SCREEN_HEIGHT );
+				renderer.setSize(window.innerWidth, window.innerHeight)
 				renderer.domElement.style.position = "relative";
-				container.appendChild( renderer.domElement );
 				renderer.gammaInput = true;
 				renderer.gammaOutput = true;
-				renderer.shadowMap.enabled = true;
+				renderer.shadowMap.enabled = true;;
+				renderer.domElement.style.position = 'absolute';
+				renderer.domElement.style.top = 0;
+				container.appendChild(renderer.domElement);
+				container.appendChild( renderer.domElement );
 
 				var color = new THREE.Color("rgb(255, 255, 255)");
 				  renderer.setClearColor( color, 0 );
@@ -213,8 +223,16 @@
 
 				if (motionParameters != null) {
 
-					camera.quaternion.copy(motionParameters.quaternion);
+					
+
+					var qm = new THREE.Quaternion();
+					THREE.Quaternion.slerp(camera.quaternion, motionParameters.quaternion, qm, 1);
+					camera.quaternion.copy(qm);
+					// camera.quaternion.copy(motionParameters.quaternion);
+					camera.quaternion.normalize();
 				}
+
+				controls.update();
   
 
 				var delta = 0.75 * clock.getDelta();

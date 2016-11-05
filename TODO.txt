@@ -1,0 +1,9 @@
+- SLERP: This is needed in order to make rotations smooth
+=> https://threejs.org/docs/index.html#Reference/Math/Quaternion
+=> https://en.wikipedia.org/wiki/Slerp
+
+- I need to somehow align the phone's axis with the camera's axis. This will probably require
+that I manipulate the quaternions after I understand it better.
+
+- If it makes things easier and more correct, I should drop the motion simulation in favor of directly reading 
+the rotation data off of the sensors. I can also directly read the quaternion.

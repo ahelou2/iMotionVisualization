@@ -6,9 +6,15 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static('visualize'));
 app.use(express.static('helpers'));
+app.use(express.static('node_modules/three/examples/js/controls'));
 app.use(express.static('node_modules/three/examples/js/libs'));
 app.use(express.static('node_modules/three/examples/js'));
 app.use(express.static('node_modules/three/build'));
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+});
 
 app.motionData = {
 	buffer: new Array(1),
