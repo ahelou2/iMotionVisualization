@@ -75,27 +75,20 @@
 				camera.position.y= -200;
 				camera.position.z = 2000;
 				controls = new THREE.DeviceOrientationControls( camera );
-				// camera.matrixAutoUpdate = false;
+			
 				scene = new THREE.Scene();
-				// WARNING: IM NOT SURE WHY THIS IS NEEDED. IM JUST COPYING FROM  interpretMotionDataMobile.js
-				// scene.autoUpdate = false;
 
-				box = new THREE.Mesh( new THREE.BoxGeometry( 40, 100, 10), material );
-			  box.position.set( 0, 0, 0 );
-			  // box.matrixAutoUpdate = false;
-			  scene.add( box );
-
-				scene.fog = new THREE.Fog( 0xffffff, 2000, 10000 );
+				// scene.fog = new THREE.Fog( 0xffffff, 2000, 10000 );
 				scene.add( camera );
 				// camera.lookAt( scene.position );
 				// GROUND (WARNING: I'VE REMOVED GROUND SO THAT DEMO LOOKS BETTER)
-				var geometry = new THREE.PlaneBufferGeometry( 16000, 16000 );
-				var material = new THREE.MeshPhongMaterial( { emissive: 0x888888 } );
-				var ground = new THREE.Mesh( geometry, material );
-				ground.position.set( 0, FLOOR, 0 );
-				ground.rotation.x = -Math.PI/2;
-				// scene.add( ground );
-				ground.receiveShadow = true;
+				// var geometry = new THREE.PlaneBufferGeometry( 16000, 16000 );
+				// var material = new THREE.MeshPhongMaterial( { emissive: 0x888888 } );
+				// var ground = new THREE.Mesh( geometry, material );
+				// ground.position.set( 0, FLOOR, 0 );
+				// ground.rotation.x = -Math.PI/2;
+				// // scene.add( ground );
+				// ground.receiveShadow = true;
 				// LIGHTS
 				scene.add( new THREE.HemisphereLight( 0x111111, 0x444444 ) );
 				var light = new THREE.DirectionalLight( 0xebf3ff, 1.5 );
@@ -111,19 +104,19 @@
 				light.shadow.camera.bottom = -d;
 				light.shadow.camera.far = 3500;
 				// RENDERER
+
+
 				renderer = new THREE.WebGLRenderer( { antialias: true, alpha: true } );
 				// renderer.setClearColor( scene.fog.color );
 				renderer.setPixelRatio( window.devicePixelRatio );
-				// renderer.setSize( SCREEN_WIDTH, SCREEN_HEIGHT );
-				renderer.setSize(window.innerWidth, window.innerHeight)
+				renderer.setSize( SCREEN_WIDTH, SCREEN_HEIGHT );
+				// renderer.domElement.style.position = 'absolute';
+				renderer.domElement.style.top = 0;
 				renderer.domElement.style.position = "relative";
 				renderer.gammaInput = true;
 				renderer.gammaOutput = true;
-				renderer.shadowMap.enabled = true;;
-				renderer.domElement.style.position = 'absolute';
-				renderer.domElement.style.top = 0;
+				// renderer.shadowMap.enabled = true;
 				container.appendChild(renderer.domElement);
-				container.appendChild( renderer.domElement );
 
 				var color = new THREE.Color("rgb(255, 255, 255)");
 				  renderer.setClearColor( color, 0 );
@@ -221,6 +214,9 @@
 
 				let motionParameters = interpretData(buffer.read());
 
+				// WARNING: this is not doing anything anymore because of DeviceOrientationControls
+				// which is reading the devices ortientation using the web API
+				// W3C Device Orientation control (http://w3c.github.io/deviceorientation/spec-source-orientation.html)
 				if (motionParameters != null) {
 
 					
