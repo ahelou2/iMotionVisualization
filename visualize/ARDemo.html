@@ -90,12 +90,12 @@
 				scene.add( camera );
 				// camera.lookAt( scene.position );
 				// GROUND (WARNING: I'VE REMOVED GROUND SO THAT DEMO LOOKS BETTER)
-				var geometry = new THREE.PlaneBufferGeometry( 16000, 16000 );
-				var material = new THREE.MeshPhongMaterial( { emissive: 0x888888 } );
-				var ground = new THREE.Mesh( geometry, material );
-				ground.position.set( 0, FLOOR, 0 );
-				ground.rotation.x = -Math.PI/2;
-				scene.add( ground );
+				// var geometry = new THREE.PlaneBufferGeometry( 16000, 16000 );
+				// var material = new THREE.MeshPhongMaterial( { emissive: 0x888888 } );
+				// var ground = new THREE.Mesh( geometry, material );
+				// ground.position.set( 0, FLOOR, 0 );
+				// ground.rotation.x = -Math.PI/2;
+				// scene.add( ground );
 				// ground.receiveShadow = true;
 				// LIGHTS
 				scene.add( new THREE.HemisphereLight( 0x111111, 0x444444 ) );
@@ -114,16 +114,16 @@
 				// RENDERER
 
 
-				renderer = new THREE.WebGLRenderer( { antialias: true, alpha: false } );
+				renderer = new THREE.WebGLRenderer( { antialias: true, alpha: true } );
 				// renderer.setClearColor( scene.fog.color );
 				renderer.setPixelRatio( window.devicePixelRatio );
 				renderer.setSize( SCREEN_WIDTH, SCREEN_HEIGHT );
 				// renderer.domElement.style.position = 'absolute';
 				renderer.domElement.style.top = 0;
 				renderer.domElement.style.position = "relative";
-				renderer.gammaInput = true;
-				renderer.gammaOutput = true;
-				renderer.shadowMap.enabled = true;
+				// renderer.gammaInput = true;
+				// renderer.gammaOutput = true;
+				// renderer.shadowMap.enabled = true;
 				container.appendChild(renderer.domElement);
 
 				var color = new THREE.Color("rgb(255, 255, 255)");
