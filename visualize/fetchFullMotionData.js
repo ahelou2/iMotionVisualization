@@ -1,6 +1,6 @@
 var buffer = new BufferLvl2(1);
 
-setInterval(fetchData, 333);
+setInterval(fetchData, 30);
 
 function fetchData() {
 

@@ -27,14 +27,15 @@ THREE.NativeDeviceOrientationControls = function( object ) {
 
 			// eulerAngles: {pitch: number, roll: number, yaw: number},
 
-			euler.set( beta, gamma, alpha, 'YXZ' ); // 'XYZ' for the device, but 'YXZ' for us
-
+			// euler.set( beta, -gamma, alpha, 'YXZ' ); // 'XYZ' for the device, but 'YXZ' for us
+			euler.set( beta, alpha, -gamma, 'YXZ' ); // 'XYZ' for the device, but 'YXZ' for us
+			
 			quaternion.setFromEuler( euler ); // orient the device
 			// quaternion.copy(newQuaternion);
 
 			quaternion.multiply( q1 ); // camera looks out the back of the device, not the top
 
-			// quaternion.multiply( q0.setFromAxisAngle( zee, - orient ) ); // adjust for screen orientation
+			// quaternion.multiply( q0.setFromAxisAngle( zee, orient ) ); // adjust for screen orientation
 
 		}
 
@@ -57,7 +58,7 @@ THREE.NativeDeviceOrientationControls = function( object ) {
 
 		var eulerAngles = attitude.eulerAngles;
 		var quaternion = new THREE.Quaternion(attitude.quaternion.x, attitude.quaternion.y, attitude.quaternion.z, attitude.quaternion.w);
-		quaternion = quaternion.inverse();
+		// quaternion = quaternion.inverse();
 		// quaternion.set(attitude.quaternion.z, attitude.quaternion.y, attitude.quaternion.x, attitude.quaternion.w);
 		// var quaternion = attitude.quaternion;
 
@@ -65,7 +66,7 @@ THREE.NativeDeviceOrientationControls = function( object ) {
 
 		if ( scope.enabled === false ) return;
 
-		// var orient = Math.PI / 2;
+		var orient = Math.PI / 2;
 		orient = eulerAngles.yaw;
 
 		setObjectQuaternion( scope.object.quaternion, eulerAngles.yaw, eulerAngles.pitch, eulerAngles.roll, orient, quaternion );

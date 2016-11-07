@@ -51,6 +51,11 @@
 
 		<script>
 
+			// document.addEventListener('message', function(e) {
+			// 	// buffer.write(e.data);
+			// 	console.log(e.data);
+			// });
+
 			const three = THREE;
 
 			var SCREEN_WIDTH = window.innerWidth;
@@ -215,7 +220,7 @@
 			}
 			function render() {
 
-				let motionParameters = interpretData(buffer.read());
+				// let motionParameters = interpretData(buffer.read());
 
 				// WARNING: this is not doing anything anymore because of DeviceOrientationControls
 				// which is reading the devices ortientation using the web API
