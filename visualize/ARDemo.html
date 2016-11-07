@@ -43,9 +43,11 @@
 
 		<script src="buffer.js"></script>
 
-		<script src="fetchMotionData.js"></script>
+		<!-- <script src="fetchMotionData.js"></script> -->
+		<script src="fetchFullMotionData.js"></script>
 
-		<script src="DeviceOrientationControls.js"></script>
+		<!-- <script src="DeviceOrientationControls.js"></script> -->
+		<script src="NativeDeviceOrientationControls.js"></script>
 
 		<script>
 
@@ -74,7 +76,8 @@
 				camera.up = new THREE.Vector3(0,1,0);
 				camera.position.y= -200;
 				camera.position.z = 2000;
-				controls = new THREE.DeviceOrientationControls( camera );
+				// controls = new THREE.DeviceOrientationControls( camera );
+				controls = new THREE.NativeDeviceOrientationControls( camera );
 			
 				scene = new THREE.Scene();
 
@@ -82,31 +85,31 @@
 				scene.add( camera );
 				// camera.lookAt( scene.position );
 				// GROUND (WARNING: I'VE REMOVED GROUND SO THAT DEMO LOOKS BETTER)
-				// var geometry = new THREE.PlaneBufferGeometry( 16000, 16000 );
-				// var material = new THREE.MeshPhongMaterial( { emissive: 0x888888 } );
-				// var ground = new THREE.Mesh( geometry, material );
-				// ground.position.set( 0, FLOOR, 0 );
-				// ground.rotation.x = -Math.PI/2;
-				// // scene.add( ground );
+				var geometry = new THREE.PlaneBufferGeometry( 16000, 16000 );
+				var material = new THREE.MeshPhongMaterial( { emissive: 0x888888 } );
+				var ground = new THREE.Mesh( geometry, material );
+				ground.position.set( 0, FLOOR, 0 );
+				ground.rotation.x = -Math.PI/2;
+				scene.add( ground );
 				// ground.receiveShadow = true;
 				// LIGHTS
 				scene.add( new THREE.HemisphereLight( 0x111111, 0x444444 ) );
 				var light = new THREE.DirectionalLight( 0xebf3ff, 1.5 );
 				light.position.set( 0, 140, 500 ).multiplyScalar( 1.1 );
 				scene.add( light );
-				light.castShadow = true;
-				light.shadow.mapSize.width = 1024;
-				light.shadow.mapSize.height = 1024;
-				var d = 390;
-				light.shadow.camera.left = -d;
-				light.shadow.camera.right = d;
-				light.shadow.camera.top = d * 1.5;
-				light.shadow.camera.bottom = -d;
-				light.shadow.camera.far = 3500;
+				// light.castShadow = true;
+				// light.shadow.mapSize.width = 1024;
+				// light.shadow.mapSize.height = 1024;
+				// var d = 390;
+				// light.shadow.camera.left = -d;
+				// light.shadow.camera.right = d;
+				// light.shadow.camera.top = d * 1.5;
+				// light.shadow.camera.bottom = -d;
+				// light.shadow.camera.far = 3500;
 				// RENDERER
 
 
-				renderer = new THREE.WebGLRenderer( { antialias: true, alpha: true } );
+				renderer = new THREE.WebGLRenderer( { antialias: true, alpha: false } );
 				// renderer.setClearColor( scene.fog.color );
 				renderer.setPixelRatio( window.devicePixelRatio );
 				renderer.setSize( SCREEN_WIDTH, SCREEN_HEIGHT );
@@ -115,7 +118,7 @@
 				renderer.domElement.style.position = "relative";
 				renderer.gammaInput = true;
 				renderer.gammaOutput = true;
-				// renderer.shadowMap.enabled = true;
+				renderer.shadowMap.enabled = true;
 				container.appendChild(renderer.domElement);
 
 				var color = new THREE.Color("rgb(255, 255, 255)");
@@ -217,16 +220,16 @@
 				// WARNING: this is not doing anything anymore because of DeviceOrientationControls
 				// which is reading the devices ortientation using the web API
 				// W3C Device Orientation control (http://w3c.github.io/deviceorientation/spec-source-orientation.html)
-				if (motionParameters != null) {
+				// if (motionParameters != null) {
 
 					
 
-					var qm = new THREE.Quaternion();
-					THREE.Quaternion.slerp(camera.quaternion, motionParameters.quaternion, qm, 1);
-					camera.quaternion.copy(qm);
-					// camera.quaternion.copy(motionParameters.quaternion);
-					camera.quaternion.normalize();
-				}
+				// 	var qm = new THREE.Quaternion();
+				// 	THREE.Quaternion.slerp(camera.quaternion, motionParameters.quaternion, qm, 1);
+				// 	camera.quaternion.copy(qm);
+				// 	// camera.quaternion.copy(motionParameters.quaternion);
+				// 	camera.quaternion.normalize();
+				// }
 
 				controls.update();
   
