@@ -72,7 +72,7 @@
 			var clock = new THREE.Clock();
 			var domMemInfo = document.getElementById( 'meminfo' ),
 				showMemInfo = false;
-			document.addEventListener( 'mousemove', onDocumentMouseMove, false );
+			
 			init();
 			animate();
 			function init() {
@@ -207,10 +207,7 @@
 				action.play();
 		
 			}
-			function onDocumentMouseMove( event ) {
-				mouseX = ( event.clientX - windowHalfX );
-				mouseY = ( event.clientY - windowHalfY );
-			}
+			
 			//
 			function animate() {
 				requestAnimationFrame( animate );
