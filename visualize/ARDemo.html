@@ -51,12 +51,15 @@
 
 		<script>
 
-			// document.addEventListener('message', function(e) {
+			// window.addEventListener('message', function(e) {
 			// 	// buffer.write(e.data);
 			// 	console.log(e.data);
 			// });
 
 			const three = THREE;
+
+			const IPHONE_SIX_PLUS_HORIZONTAL_FOV = 58.04;
+			const IPHONE_SIX_PLUS_VERTICAL_FOV =  (180 / Math.PI) * (2 * Math.atan(Math.tan(IPHONE_SIX_PLUS_HORIZONTAL_FOV / 2) * (9 / 16)));
 
 			var SCREEN_WIDTH = window.innerWidth;
 			var SCREEN_HEIGHT = window.innerHeight;
@@ -77,10 +80,10 @@
 			animate();
 			function init() {
 				container = document.getElementById( 'container' );
-				camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 1, 10000 );
-				camera.up = new THREE.Vector3(0,1,0);
+				camera = new THREE.PerspectiveCamera( IPHONE_SIX_PLUS_VERTICAL_FOV, 9 / 16, 100, 3000 );
+				// camera.up = new THREE.Vector3(0,1,0);
 				camera.position.y= -200;
-				camera.position.z = 2000;
+				camera.position.z = 1500;
 				// controls = new THREE.DeviceOrientationControls( camera );
 				controls = new THREE.NativeDeviceOrientationControls( camera );
 			
@@ -114,7 +117,7 @@
 				// RENDERER
 
 
-				renderer = new THREE.WebGLRenderer( { antialias: true, alpha: true } );
+				renderer = new THREE.WebGLRenderer( { antialias: false, alpha: true, precision:"lowp", depth: falsee } );
 				// renderer.setClearColor( scene.fog.color );
 				renderer.setPixelRatio( window.devicePixelRatio );
 				renderer.setSize( SCREEN_WIDTH, SCREEN_HEIGHT );
