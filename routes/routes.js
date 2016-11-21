@@ -1,4 +1,4 @@
-var appRouter = function(app) {
+var appRouter = function(app, socket) {
 
 	app.get("/", function(req, res) {
 		res.send("Hello World");
@@ -55,6 +55,16 @@ var appRouter = function(app) {
 			app.motionData.writeIdx = (writeIdx + 1) % bufferLength;
 			return res.send(req.body);
 		}
+	});
+
+	socket.on('connection', function(clientSocket){
+	  console.log('a user connected');
+
+	  clientSocket.on("send", function(message){
+	    console.log(message);
+	    socket.emit("received", "LOUD AND CLEAR!");
+	  });
+
 	});
 
 }

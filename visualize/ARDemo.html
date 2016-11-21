@@ -117,7 +117,8 @@
 				// RENDERER
 
 
-				renderer = new THREE.WebGLRenderer( { antialias: false, alpha: true, precision:"lowp", depth: falsee } );
+				// renderer = new THREE.WebGLRenderer( { antialias: false, alpha: true, precision:"lowp", depth: false } );
+				renderer = new THREE.WebGLRenderer( { antialias: false, alpha: true } );
 				// renderer.setClearColor( scene.fog.color );
 				renderer.setPixelRatio( window.devicePixelRatio );
 				renderer.setSize( SCREEN_WIDTH, SCREEN_HEIGHT );

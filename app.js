@@ -1,6 +1,9 @@
 var express = require("express");
 var bodyParser = require("body-parser");
 var app = express();
+var http = require('http').Server(app);
+var socket = require('socket.io')(http);
+
  
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -22,8 +25,14 @@ app.motionData = {
 	readIdx: 0,
 };
  
-var routes = require("./routes/routes.js")(app);
+var routes = require("./routes/routes.js")(app, socket);
  
 var server = app.listen(3000, function () {
     console.log("Listening on port %s...", server.address().port);
+});
+
+// port used for websocket connections
+const port_num = 3010;
+http.listen(port_num, function(){
+  console.log('Listening for a websocket connection on port:' + port_num);
 });
